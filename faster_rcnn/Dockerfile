@@ -114,7 +114,7 @@ ENV PYTHONPATH=$PYCAFFE_ROOT:$PYTHONPATH \
 
 RUN echo "$CAFFE_ROOT/build/lib" >> /etc/ld.so.conf.d/caffe.conf && ldconfig
 
-RUN git clone --recursive https://github.com/pool1892/py-faster-rcnn.git /root/faster_rcnn
+RUN git clone --recursive https://github.com/rbgirshick/py-faster-rcnn.git /root/faster_rcnn
 COPY Makefile.config /root/faster_rcnn/caffe-fast-rcnn/Makefile.config
 	
 RUN cd /root/faster_rcnn/lib && \
