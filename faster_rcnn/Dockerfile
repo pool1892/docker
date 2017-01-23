@@ -119,10 +119,11 @@ RUN git clone --recursive https://github.com/pool1892/py-faster-rcnn.git /root/f
 	make && \
 	cd /root/faster_rcnn/caffe-fast-rcnn && \
 	cat python/requirements.txt | xargs -n1 pip install && \
-	mkdir build && cd build && \
-	cmake -DUSE_CUDNN=1 -DBLAS=Open .. && \
-	make -j"$(nproc)" all && \
-	make install
+#	mkdir build && cd build && \
+#	cmake -DUSE_CUDNN=1 -DBLAS=Open .. && \
+#	make -j"$(nproc)" all && \
+#	make install
+	make -j"$(nproc)" && make pycaffe
 
 # Set up notebook config
 COPY jupyter_notebook_config.py /root/.jupyter/
