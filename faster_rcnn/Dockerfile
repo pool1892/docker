@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
 		g++ \
 		gfortran \
 		git \
+		libatlas-base-dev \
 		libffi-dev \
 		libfreetype6-dev \
 		libhdf5-dev \
@@ -114,7 +115,10 @@ ENV PYTHONPATH=$PYCAFFE_ROOT:$PYTHONPATH \
 
 RUN echo "$CAFFE_ROOT/build/lib" >> /etc/ld.so.conf.d/caffe.conf && ldconfig
 
-RUN git clone --recursive https://github.com/rbgirshick/py-faster-rcnn.git /root/faster_rcnn
+RUN git clone https://github.com/rbgirshick/py-faster-rcnn.git /root/faster_rcnn
+RUN cd /root/faster_rcnn
+RUN git clone https://github.com/lukemiller86/caffe-fast-rcnn.git --branch caffe-update --single-branch /root/faster_rcnn/caffe-fast-rcnn
+
 COPY Makefile.config /root/faster_rcnn/caffe-fast-rcnn/Makefile.config
 	
 RUN cd /root/faster_rcnn/lib && \
