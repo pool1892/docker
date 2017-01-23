@@ -1,20 +1,9 @@
 FROM nvidia/cuda:8.0-cudnn5-devel
 
-MAINTAINER Sai Soundararaj <saip@outlook.com>
+MAINTAINER Christoph Schwerdtfeger
 
-ARG THEANO_VERSION=rel-0.8.2
-ARG TENSORFLOW_VERSION=0.8.0
-ARG TENSORFLOW_ARCH=gpu
-ARG KERAS_VERSION=1.0.3
-ARG LASAGNE_VERSION=v0.1
-ARG TORCH_VERSION=latest
 ARG CAFFE_VERSION=master
 
-#RUN echo -e "\n**********************\nNVIDIA Driver Version\n**********************\n" && \
-#	cat /proc/driver/nvidia/version && \
-#	echo -e "\n**********************\nCUDA Version\n**********************\n" && \
-#	nvcc -V && \
-#	echo -e "\n\nBuilding your Deep Learning Docker Image...\n"
 
 # Install some dependencies
 RUN apt-get update && apt-get install -y \
@@ -32,7 +21,7 @@ RUN apt-get update && apt-get install -y \
 		liblcms2-dev \
 		libopenblas-dev \
 		liblapack-dev \
-		libopenjpeg2 \
+#		libopenjpeg2 \
 		libpng12-dev \
 		libssl-dev \
 		libtiff5-dev \
@@ -97,12 +86,6 @@ RUN pip --no-cache-dir install --upgrade ipython && \
 		&& \
 	python -m ipykernel.kernelspec
 
-
-# Install TensorFlow
-RUN pip --no-cache-dir install \
-	https://storage.googleapis.com/tensorflow/linux/${TENSORFLOW_ARCH}/tensorflow-${TENSORFLOW_VERSION}-cp27-none-linux_x86_64.whl
-
-
 # Install dependencies for Caffe
 RUN apt-get update && apt-get install -y \
 		libboost-all-dev \
@@ -136,54 +119,6 @@ ENV PYTHONPATH=$PYCAFFE_ROOT:$PYTHONPATH \
 	PATH=$CAFFE_ROOT/build/tools:$PYCAFFE_ROOT:$PATH
 
 RUN echo "$CAFFE_ROOT/build/lib" >> /etc/ld.so.conf.d/caffe.conf && ldconfig
-
-
-# Install Theano and set up Theano config (.theanorc) for CUDA and OpenBLAS
-RUN pip --no-cache-dir install git+git://github.com/Theano/Theano.git@${THEANO_VERSION} && \
-	\
-	echo "[global]\ndevice=gpu\nfloatX=float32\noptimizer_including=cudnn\nmode=FAST_RUN \
-		\n[lib]\ncnmem=0.95 \
-		\n[nvcc]\nfastmath=True \
-		\n[blas]\nldflag = -L/usr/lib/openblas-base -lopenblas \
-		\n[DebugMode]\ncheck_finite=1" \
-	> /root/.theanorc
-
-
-# Install Keras
-RUN pip --no-cache-dir install git+git://github.com/fchollet/keras.git@${KERAS_VERSION}
-
-
-# Install Lasagne
-RUN pip --no-cache-dir install git+git://github.com/Lasagne/Lasagne.git@${LASAGNE_VERSION}
-
-
-# Install Torch
-RUN git clone https://github.com/torch/distro.git /root/torch --recursive && \
-	cd /root/torch && \
-	bash install-deps && \
-	yes no | ./install.sh
-
-# Export the LUA evironment variables manually
-ENV LUA_PATH='/root/.luarocks/share/lua/5.1/?.lua;/root/.luarocks/share/lua/5.1/?/init.lua;/root/torch/install/share/lua/5.1/?.lua;/root/torch/install/share/lua/5.1/?/init.lua;./?.lua;/root/torch/install/share/luajit-2.1.0-beta1/?.lua;/usr/local/share/lua/5.1/?.lua;/usr/local/share/lua/5.1/?/init.lua' \
-	LUA_CPATH='/root/.luarocks/lib/lua/5.1/?.so;/root/torch/install/lib/lua/5.1/?.so;./?.so;/usr/local/lib/lua/5.1/?.so;/usr/local/lib/lua/5.1/loadall.so' \
-	PATH=/root/torch/install/bin:$PATH \
-	LD_LIBRARY_PATH=/root/torch/install/lib:$LD_LIBRARY_PATH \
-	DYLD_LIBRARY_PATH=/root/torch/install/lib:$DYLD_LIBRARY_PATH
-ENV LUA_CPATH='/root/torch/install/lib/?.so;'$LUA_CPATH
-
-# Install the latest versions of nn, cutorch, cunn, cuDNN bindings and iTorch
-RUN luarocks install nn && \
-	luarocks install cutorch && \
-	luarocks install cunn && \
-    luarocks install loadcaffe && \
-	\
-	cd /root && git clone https://github.com/soumith/cudnn.torch.git && cd cudnn.torch && \
-	git checkout R4 && \
-	luarocks make && \
-	\
-	cd /root && git clone https://github.com/facebook/iTorch.git && \
-	cd iTorch && \
-	luarocks make
 
 
 # Set up notebook config
