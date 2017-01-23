@@ -117,7 +117,7 @@ RUN echo "$CAFFE_ROOT/build/lib" >> /etc/ld.so.conf.d/caffe.conf && ldconfig
 RUN git clone --recursive https://github.com/rbgirshick/py-faster-rcnn.git /root/faster_rcnn && \
 	cd /root/faster_rcnn/lib && \
 	make && \
-	cd /root/faster_rcnn/caffe-fast-rcnn && 
+	cd /root/faster_rcnn/caffe-fast-rcnn && \
 	cat python/requirements.txt | xargs -n1 pip install && \
 	mkdir build && cd build && \
 	cmake -DUSE_CUDNN=1 -DBLAS=Open .. && \
