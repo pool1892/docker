@@ -1,4 +1,4 @@
-FROM nvidia/cuda:8.0-cudnn5-devel
+FROM nvidia/cuda:7.5-cudnn3-devel
 
 MAINTAINER Christoph Schwerdtfeger
 
@@ -121,15 +121,7 @@ RUN git clone https://github.com/lukemiller86/caffe-fast-rcnn.git --branch caffe
 
 COPY Makefile.config /root/faster_rcnn/caffe-fast-rcnn/Makefile.config
 	
-RUN cd /root/faster_rcnn/lib && \
-	make && \
-	cd /root/faster_rcnn/caffe-fast-rcnn && \
-	cat python/requirements.txt | xargs -n1 pip install && \
-#	mkdir build && cd build && \
-#	cmake -DUSE_CUDNN=1 -DBLAS=Open .. && \
-#	make -j"$(nproc)" all && \
-#	make install
-	make -j"$(nproc)" && make pycaffe
+
 
 # Set up notebook config
 COPY jupyter_notebook_config.py /root/.jupyter/
