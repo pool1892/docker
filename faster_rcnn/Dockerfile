@@ -163,11 +163,14 @@ RUN mv /root/faster_rcnn/caffe-fast-rcnn/src/caffe/test/test_smooth_L1_loss_laye
 
 RUN cd /root/faster_rcnn/caffe-fast-rcnn/ && make test -j $(($(nproc) + 1))
 
-# This test is failing to find GPU. nvidia-smi, cuda samples and cifar10 for Caffe all functional.
+# This test is failing to find GPU. nvidia-smi, cuda samples and cifar10 for Caffe all functional. See http://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#runfile-verifications
 # RUN cd /root/faster_rcnn/caffe-fast-rcnn/ && make runtest -j $(($(nproc) + 1))
 
 # Restore file we moved earlier
 RUN mv /root/faster_rcnn/caffe-fast-rcnn/src/caffe/test/test_smooth_L1_loss_layer.cpp.orig /root/faster_rcnn/caffe-fast-rcnn/src/caffe/test/test_smooth_L1_loss_layer.cpp
+
+# Make Faster R-CNN
+RUN cd /root/faster_rcnn/lib/ && make
 
 # Set up notebook config
 COPY jupyter_notebook_config.py /root/.jupyter/
