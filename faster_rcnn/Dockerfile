@@ -1,4 +1,4 @@
-FROM nvidia/cuda:7.5-cudnn3-devel
+FROM nvidia/cuda:8.0-cudnn5-devel
 
 MAINTAINER Christoph Schwerdtfeger
 
@@ -11,18 +11,39 @@ RUN apt-get update && apt-get install -y \
 		build-essential \
 		cmake \
 		curl \
+		ffmpeg \
 		g++ \
 		gfortran \
 		git \
 		libatlas-base-dev \
+		libdc1394-22 \
+		libdc1394-22-dev \
 		libffi-dev \
 		libfreetype6-dev \
+		libgtk-3-dev \
 		libhdf5-dev \
+		libjasper-dev \
 		libjpeg-dev \
 		liblcms2-dev \
 		libopenblas-dev \
 		liblapack-dev \
 #		libopenjpeg2 \
+		libavcodec-dev \
+		libavformat-dev \
+		libswscale-dev \
+		libxine2-dev \
+		libgstreamer0.10-dev \
+		libgstreamer-plugins-base0.10-dev \
+		libv4l-dev \
+		libtbb-dev \
+#		libfaac-dev \
+		libmp3lame-dev \
+		libopencore-amrnb-dev \
+		libopencore-amrwb-dev \
+		libtheora-dev \
+		libvorbis-dev \
+		libxvidcore-dev \
+		v4l-utils \
 		libpng12-dev \
 		libssl-dev \
 		libtiff5-dev \
@@ -31,6 +52,7 @@ RUN apt-get update && apt-get install -y \
 		nano \
 		pkg-config \
 		python-dev \
+		qtbase5-dev \
 		software-properties-common \
 		unzip \
 		vim \
@@ -75,11 +97,14 @@ RUN apt-get update && apt-get install -y \
 RUN pip --no-cache-dir install --upgrade ipython && \
 	pip --no-cache-dir install \
 		Cython \
+		easydict \
 		ipykernel \
 		jupyter \
 		path.py \
 		Pillow \
+		protobuf \
 		pygments \
+		PyYAML \
 		six \
 		sphinx \
 		wheel \
@@ -104,9 +129,17 @@ RUN apt-get update && apt-get install -y \
 	apt-get autoremove && \
 	rm -rf /var/lib/apt/lists/*
 
+# Build OpenCV
+RUN git clone https://github.com/opencv/opencv.git /root/opencv
+RUN mkdir /root/opencv/build
+RUN cd /root/opencv/build/ && cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D WITH_V4L=ON -D WITH_QT=ON -D WITH_OPENGL=ON -D WITH_CUBLAS=ON -DCUDA_NVCC_FLAGS="-D_FORCE_INLINES" ..
+RUN cd /root/opencv/build/ && make -j $(($(nproc) + 1))
+
+# Install OpenCV
+RUN cd /root/opencv/build/ && make install
+RUN echo "/usr/local/lib" >> /etc/ld.so.conf.d/opencv.conf && ldconfig
+
 # Install Caffe
-
-
 # Set up Caffe environment variables
 ENV CAFFE_ROOT=/root/faster_rcnn/caffe-fast-rcnn
 ENV PYCAFFE_ROOT=$CAFFE_ROOT/python
@@ -115,13 +148,26 @@ ENV PYTHONPATH=$PYCAFFE_ROOT:$PYTHONPATH \
 
 RUN echo "$CAFFE_ROOT/build/lib" >> /etc/ld.so.conf.d/caffe.conf && ldconfig
 
+# Clone Faster R-CNN WITHOUT recursion
 RUN git clone https://github.com/rbgirshick/py-faster-rcnn.git /root/faster_rcnn
-RUN cd /root/faster_rcnn
+# Clone Caffe with Fast R-CNN modification from lukemiller86
 RUN git clone https://github.com/lukemiller86/caffe-fast-rcnn.git --branch caffe-update --single-branch /root/faster_rcnn/caffe-fast-rcnn
 
 COPY Makefile.config /root/faster_rcnn/caffe-fast-rcnn/Makefile.config
-	
 
+RUN cd /root/faster_rcnn/caffe-fast-rcnn/ && make all -j $(($(nproc) + 1))
+RUN cd /root/faster_rcnn/caffe-fast-rcnn/ && make pycaffe
+
+# Rename file in order to run Caffe tests
+RUN mv /root/faster_rcnn/caffe-fast-rcnn/src/caffe/test/test_smooth_L1_loss_layer.cpp /root/faster_rcnn/caffe-fast-rcnn/src/caffe/test/test_smooth_L1_loss_layer.cpp.orig
+
+RUN cd /root/faster_rcnn/caffe-fast-rcnn/ && make test -j $(($(nproc) + 1))
+
+# This test is failing to find GPU. nvidia-smi, cuda samples and cifar10 for Caffe all functional.
+# RUN cd /root/faster_rcnn/caffe-fast-rcnn/ && make runtest -j $(($(nproc) + 1))
+
+# Restore file we moved earlier
+RUN mv /root/faster_rcnn/caffe-fast-rcnn/src/caffe/test/test_smooth_L1_loss_layer.cpp.orig /root/faster_rcnn/caffe-fast-rcnn/src/caffe/test/test_smooth_L1_loss_layer.cpp
 
 # Set up notebook config
 COPY jupyter_notebook_config.py /root/.jupyter/
