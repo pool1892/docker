@@ -106,6 +106,7 @@ RUN apt-get update && apt-get install -y \
 # Install Caffe
 RUN cd /root && \
 	git clone -b ${CAFFE_VERSION} --depth 1 https://github.com/weiliu89/caffe.git  && \
+	cd caffe && \
 	git checkout ssd && \
 	cd /root/caffe && \
 	cat python/requirements.txt | xargs -n1 pip install && \
