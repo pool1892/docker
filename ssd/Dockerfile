@@ -114,7 +114,6 @@ RUN cd /root && \
 	cmake -DUSE_CUDNN=1 -DBLAS=Open .. && \
 	make -j"$(nproc)" all && \
 	make install && \
-	make py && \
 	make test -j8 && \
 	make runtest -j8
 
