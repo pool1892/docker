@@ -104,13 +104,18 @@ RUN apt-get update && apt-get install -y \
 	rm -rf /var/lib/apt/lists/*
 
 # Install Caffe
-RUN git clone -b ${CAFFE_VERSION} --depth 1 https://github.com/weiliu89/caffe.git /root/caffe && \
+RUN git clone -b ${CAFFE_VERSION} --depth 1 https://github.com/weiliu89/caffe.git /root/
+git checkout ssd
+caffe && \
 	cd /root/caffe && \
 	cat python/requirements.txt | xargs -n1 pip install && \
 	mkdir build && cd build && \
 	cmake -DUSE_CUDNN=1 -DBLAS=Open .. && \
 	make -j"$(nproc)" all && \
 	make install
+	make py
+	make test -j8
+	make runtest -j8
 
 # Set up Caffe environment variables
 ENV CAFFE_ROOT=/root/caffe
