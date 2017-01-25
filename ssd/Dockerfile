@@ -5,7 +5,7 @@ ENV CAFFE_ROOT=/root/caffe
 WORKDIR $CAFFE_ROOT
 
 
-RUN git clone https://github.com/weiliu89/caffe.git . && \
+RUN git clone https://github.com/pool1892/caffe.git . && \
     git checkout ssd && \
     pip install --upgrade pip && \
     cd python && for req in $(cat requirements.txt) pydot; do pip install $req; done && cd .. && \
