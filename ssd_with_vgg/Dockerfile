@@ -1,4 +1,4 @@
-FROM pool1892/docker:caffe_pre
+FROM pool1892/docker:ssd
 
 MAINTAINER Christoph Schwerdtfeger
 
