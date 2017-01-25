@@ -2,7 +2,6 @@ FROM pool1892/docker:caffe_pre
 
 MAINTAINER Christoph Schwerdtfeger
 
-
 # Install Caffe
 RUN cd /root && \
 	git clone https://github.com/weiliu89/caffe.git  && \
@@ -25,7 +24,6 @@ ENV PYTHONPATH=$PYCAFFE_ROOT:$PYTHONPATH \
 	PATH=$CAFFE_ROOT/build/tools:$PYCAFFE_ROOT:$PATH
 
 RUN echo "$CAFFE_ROOT/build/lib" >> /etc/ld.so.conf.d/caffe.conf && ldconfig
-
 
 # Set up notebook config
 COPY jupyter_notebook_config.py /root/.jupyter/
