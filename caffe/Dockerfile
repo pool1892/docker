@@ -22,8 +22,27 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python-numpy \
         python-pip \
         python-setuptools \
-        python-scipy && \
-    rm -rf /var/lib/apt/lists/*
+        python-scipy \
+	python-nose \
+	python-h5py \
+	python-skimage \
+	python-matplotlib \
+	python-pandas \
+	python-sklearn \
+        python-sympy \
+    python-scipy && \
+    rm -rf /var/lib/apt/lists/* && \
+    pip install --upgrade pip &&\
+    pip --no-cache-dir install \
+        ipykernel \
+        jupyter \
+        matplotlib \
+        numpy \
+        scipy \
+        sklearn \
+        Pillow \
+        && \
+    python -m ipykernel.kernelspec
 
 ENV CAFFE_ROOT=/root/caffe
 WORKDIR $CAFFE_ROOT
@@ -32,7 +51,6 @@ WORKDIR $CAFFE_ROOT
 ENV CLONE_TAG=rc4
 
 RUN git clone -b ${CLONE_TAG} --depth 1 https://github.com/BVLC/caffe.git . && \
-    pip install --upgrade pip && \
     cd python && for req in $(cat requirements.txt) pydot; do pip install $req; done && cd .. && \
     git clone https://github.com/NVIDIA/nccl.git && cd nccl && make -j install && cd .. && rm -rf nccl && \
     mkdir build && cd build && \
