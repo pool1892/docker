@@ -1,6 +1,105 @@
-FROM pool1892/docker:caffe_pre
+FROM nvidia/cuda:8.0-cudnn5-devel
 
 MAINTAINER Christoph Schwerdtfeger
+
+# Install some dependencies
+RUN apt-get update && apt-get install -y \
+		bc \
+		build-essential \
+		cmake \
+		curl \
+		g++ \
+		gfortran \
+		git \
+		libffi-dev \
+		libfreetype6-dev \
+		libhdf5-dev \
+		libjpeg-dev \
+		liblcms2-dev \
+		libopenblas-dev \
+		liblapack-dev \
+#		libopenjpeg2 \
+		libpng12-dev \
+		libssl-dev \
+		libtiff5-dev \
+		libwebp-dev \
+		libzmq3-dev \
+		nano \
+		pkg-config \
+		python-dev \
+		software-properties-common \
+		unzip \
+		vim \
+		wget \
+		zlib1g-dev \
+		&& \
+	apt-get clean && \
+	apt-get autoremove && \
+	rm -rf /var/lib/apt/lists/* && \
+# Link BLAS library to use OpenBLAS using the alternatives mechanism (https://www.scipy.org/scipylib/building/linux.html#debian-ubuntu)
+	update-alternatives --set libblas.so.3 /usr/lib/openblas-base/libblas.so.3
+
+# Install pip
+RUN curl -O https://bootstrap.pypa.io/get-pip.py && \
+	python get-pip.py && \
+	rm get-pip.py
+
+# Add SNI support to Python
+RUN pip --no-cache-dir install \
+		pyopenssl \
+		ndg-httpsclient \
+		pyasn1
+
+# Install useful Python packages using apt-get to avoid version incompatibilities with Tensorflow binary
+# especially numpy, scipy, skimage and sklearn (see https://github.com/tensorflow/tensorflow/issues/2034)
+RUN apt-get update && apt-get install -y \
+		python-numpy \
+		python-scipy \
+		python-nose \
+		python-h5py \
+		python-skimage \
+		python-matplotlib \
+		python-pandas \
+		python-sklearn \
+		python-sympy \
+		&& \
+	apt-get clean && \
+	apt-get autoremove && \
+	rm -rf /var/lib/apt/lists/*
+
+# Install other useful Python packages using pip
+RUN pip --no-cache-dir install --upgrade ipython && \
+	pip --no-cache-dir install \
+		Cython \
+		ipykernel \
+		jupyter \
+		path.py \
+		Pillow \
+		pygments \
+		six \
+		sphinx \
+		wheel \
+		zmq \
+		&& \
+	python -m ipykernel.kernelspec
+
+# Install dependencies for Caffe
+RUN apt-get update && apt-get install -y \
+		libboost-all-dev \
+		libgflags-dev \
+		libgoogle-glog-dev \
+		libhdf5-serial-dev \
+		libleveldb-dev \
+		liblmdb-dev \
+		libopencv-dev \
+		libprotobuf-dev \
+		libsnappy-dev \
+		protobuf-compiler \
+		&& \
+	apt-get clean && \
+	apt-get autoremove && \
+	rm -rf /var/lib/apt/lists/*
+
 
 # Install Caffe
 RUN cd /root && \
