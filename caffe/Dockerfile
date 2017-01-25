@@ -1,53 +1,10 @@
-FROM nvidia/cuda:8.0-cudnn5-devel-ubuntu16.04
+FROM pool1892/docker:caffe_pre
 
 MAINTAINER Christoph Schwerdtfeger
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        build-essential \
-        cmake \
-        git \
-        wget \
-        libatlas-base-dev \
-        libboost-all-dev \
-        libgflags-dev \
-        libgoogle-glog-dev \
-        libhdf5-serial-dev \
-        libleveldb-dev \
-        liblmdb-dev \
-        libopencv-dev \
-        libprotobuf-dev \
-        libsnappy-dev \
-        protobuf-compiler \
-        python-dev \
-        python-numpy \
-        python-pip \
-        python-setuptools \
-        python-scipy \
-	python-nose \
-	python-h5py \
-	python-skimage \
-	python-matplotlib \
-	python-pandas \
-	python-sklearn \
-        python-sympy \
-    python-scipy && \
-    rm -rf /var/lib/apt/lists/* && \
-    pip install --upgrade pip &&\
-    pip --no-cache-dir install \
-        ipykernel \
-        jupyter \
-        matplotlib \
-        numpy \
-        scipy \
-        sklearn \
-        Pillow \
-        && \
-    python -m ipykernel.kernelspec
 
 ENV CAFFE_ROOT=/root/caffe
 WORKDIR $CAFFE_ROOT
 
-# FIXME: use ARG instead of ENV once DockerHub supports this
 ENV CLONE_TAG=rc4
 
 RUN git clone -b ${CLONE_TAG} --depth 1 https://github.com/BVLC/caffe.git . && \
@@ -61,12 +18,6 @@ ENV PYCAFFE_ROOT $CAFFE_ROOT/python
 ENV PYTHONPATH $PYCAFFE_ROOT:$PYTHONPATH
 ENV PATH $CAFFE_ROOT/build/tools:$PYCAFFE_ROOT:$PATH
 RUN echo "$CAFFE_ROOT/build/lib" >> /etc/ld.so.conf.d/caffe.conf && ldconfig
-
-# Set up notebook config
-COPY jupyter_notebook_config.py /root/.jupyter/
-
-# Jupyter has issues with being run directly: https://github.com/ipython/ipython/issues/7062
-COPY run_jupyter.sh /root/
 
 # Expose Ports for TensorBoard (6006), Ipython (8888)
 EXPOSE  8888
