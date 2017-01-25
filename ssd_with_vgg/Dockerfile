@@ -6,7 +6,7 @@ RUN mkdir /root/caffe/models/VGGNet && \
 	cd /root/caffe/models/VGGNet && \
 	wget http://cs.unc.edu/~wliu/projects/ParseNet/VGG_ILSVRC_16_layers_fc_reduced.caffemodel
 
-RUN mdkir /root/data && cd /root/data && \
+RUN mkdir /root/data && cd /root/data && \
 	wget http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar && \
 	wget http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCtrainval_06-Nov-2007.tar && \
 	wget http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCtest_06-Nov-2007.tar && \
