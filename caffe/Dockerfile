@@ -7,11 +7,15 @@ ARG CAFFE_VERSION=master
 # Install Caffe
 RUN git clone -b ${CAFFE_VERSION} --depth 1 https://github.com/BVLC/caffe.git /root/caffe && \
 	cd /root/caffe && \
-	cat python/requirements.txt | xargs -n1 pip install && \
-	mkdir build && cd build && \
-	cmake -DUSE_CUDNN=1 -DBLAS=Open .. && \
-	make -j"$(nproc)" all && \
-	make install
+	cat python/requirements.txt | xargs -n1 pip install
+COPY Makefile /root/caffe/Makefile
+COPY Makefile.config /root/caffe/Makefile.config
+# 	mkdir build && cd build && \
+#	cmake -DUSE_CUDNN=1 -DBLAS=Open .. && \
+RUN cd /root/caffe && make all -j"$(nproc)" && \
+	make py -j8
+RUN cd /root/caffe && make test -j"$(nproc)"
+RUN cd /root/caffe && make runtest -j"$(nproc)"
 
 # Set up Caffe environment variables
 ENV CAFFE_ROOT=/root/caffe
