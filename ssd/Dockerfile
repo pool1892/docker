@@ -13,8 +13,8 @@ RUN cd /root/caffe && \
 	cat python/requirements.txt | xargs -n1 pip install && \
 	mkdir build && cd build && \
 	cmake -DUSE_CUDNN=1 -DBLAS=Open ..
-RUN make -j"$(nproc)" all
-RUN make install
+RUN cd /root/caffe/build && make -j"$(nproc)" all
+RUN cd /root/caffe/build && make install
 #RUN	make py
 #RUN	make test -j8
 #RUN	make runtest -j8
