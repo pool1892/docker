@@ -155,6 +155,7 @@ RUN git clone https://github.com/lukemiller86/caffe-fast-rcnn.git --branch caffe
 
 COPY Makefile.config /root/faster_rcnn/caffe-fast-rcnn/Makefile.config
 
+# Build Caffe and pycaffe
 RUN cd /root/faster_rcnn/caffe-fast-rcnn/ && make all -j $(($(nproc) + 1))
 RUN cd /root/faster_rcnn/caffe-fast-rcnn/ && make pycaffe
 
@@ -169,8 +170,11 @@ RUN cd /root/faster_rcnn/caffe-fast-rcnn/ && make test -j $(($(nproc) + 1))
 # Restore file we moved earlier
 RUN mv /root/faster_rcnn/caffe-fast-rcnn/src/caffe/test/test_smooth_L1_loss_layer.cpp.orig /root/faster_rcnn/caffe-fast-rcnn/src/caffe/test/test_smooth_L1_loss_layer.cpp
 
-# Make Faster R-CNN
+# Build Cython modules
 RUN cd /root/faster_rcnn/lib/ && make
+
+# Download pre-computed Faster R-CNN detectors
+RUN cd /root/faster_rcnn/ && ./data/scripts/fetch_faster_rcnn_models.sh
 
 # Set up notebook config
 COPY jupyter_notebook_config.py /root/.jupyter/
