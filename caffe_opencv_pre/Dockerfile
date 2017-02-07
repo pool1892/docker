@@ -17,7 +17,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN git clone https://github.com/opencv/opencv.git /root/opencv
 RUN mkdir /root/opencv/build
 RUN git clone https://github.com/opencv/opencv_contrib.git /root/opencv_contrib
-RUN cd /root/opencv/build/ && cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D WITH_V4L=ON -D WITH_QT=ON -D WITH_OPENGL=ON -D WITH_CUBLAS=ON -D CUDA_NVCC_FLAGS="-D_FORCE_INLINES" -D OPENCV_EXTRA_MODULES_PATH=/root/opencv_contrib/modules ..
+RUN cd /root/opencv/build/ && cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local  \
+	-D WITH_TBB=ON -D WITH_V4L=ON -D WITH_QT=ON -D WITH_OPENGL=ON -D WITH_CUBLAS=ON \
+	-D ENABLE_FAST_MATH=1 -D CUDA_FAST_MATH=1 -D WITH-D CUDA_NVCC_FLAGS="-D_FORCE_INLINES" \
+	-D OPENCV_EXTRA_MODULES_PATH=/root/opencv_contrib/modules ..
 RUN cd /root/opencv/build/ && make -j $(($(nproc) + 1))
 
 # Install OpenCV
