@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	unzip ffmpeg qtbase5-dev \
 	libopencv-dev libgtk-3-dev libdc1394-22 libdc1394-22-dev libjpeg-dev libpng12-dev libtiff5-dev libjasper-dev \
 	libavcodec-dev libavformat-dev libswscale-dev libxine2-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev \
-	libv4l-dev libtbb-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev \
+	libv4l-dev libtbb-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev \
 	libvorbis-dev libxvidcore-dev v4l-utils \
 	libjpeg8-dev libx264-dev
 
