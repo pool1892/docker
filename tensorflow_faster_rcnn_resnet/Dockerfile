@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python-opencv \
         python-tk \
         libopencv-dev \
+        vim \
         wget \
         && \
     apt-get clean && \
@@ -19,6 +20,7 @@ RUN pip --no-cache-dir install --upgrade ipython && \
 		easydict \
 		Cython \
 		pyyaml \
+		scikit-image \
 		&& \
 	python -m ipykernel.kernelspec
 
