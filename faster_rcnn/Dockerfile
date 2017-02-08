@@ -69,6 +69,24 @@ RUN cd /root/faster_rcnn/lib/ && make
 # Download pre-computed Faster R-CNN detectors
 RUN cd /root/faster_rcnn/ && ./data/scripts/fetch_faster_rcnn_models.sh
 
+# Get PASCAL VOC 2007 devkit tar files
+RUN wget http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCtrainval_06-Nov-2007.tar && \
+	wget http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCtest_06-Nov-2007.tar && \
+	wget http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCdevkit_08-Jun-2007.tar
+
+# Untar PASCAL VOC 2007 devkit to data
+RUN tar xvf VOCtrainval_06-Nov-2007.tar -C /root/faster_rcnn/data && \
+	tar xvf VOCtest_06-Nov-2007.tar -C /root/faster_rcnn/data && \
+	tar xvf VOCdevkit_08-Jun-2007.tar -C /root/faster_rcnn/data
+
+# Remove PASCAL VOC 2007 devkit tar files
+RUN rm VOCtrainval_06-Nov-2007.tar && \
+	rm VOCtest_06-Nov-2007.tar && \
+	rm VOCdevkit_08-Jun-2007.tar
+
+# Create symbolic link to PASCAL VOC 2007 devkit
+RUN cd /root/faster_rcnn/data && ln -s VOCdevkit VOCdevkit2007
+
 # Set up notebook config
 COPY jupyter_notebook_config.py /root/.jupyter/
 
