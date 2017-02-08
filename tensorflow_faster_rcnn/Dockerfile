@@ -18,6 +18,7 @@ RUN pip --no-cache-dir install --upgrade ipython && \
 	pip --no-cache-dir install \
 		easydict \
 		Cython \
+		pyyaml \
 		&& \
 	python -m ipykernel.kernelspec
 
