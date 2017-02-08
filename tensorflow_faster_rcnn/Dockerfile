@@ -6,6 +6,7 @@ MAINTAINER Luke Miller
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		git \
         python-opencv \
+        python-tk \
         libopencv-dev \
         wget \
         && \
