@@ -49,7 +49,7 @@ RUN cd /root/faster_rcnn/data && ln -s VOCdevkit VOCdevkit2007
 
 # Download pre-trained ImageNet models
 RUN cd /root/faster_rcnn/data && mkdir pretrain_model && cd pretrain_model && \
-	wget https://www.dropbox.com/s/po2kzdhdgl4ix55/VGG_imagenet.npy?dl=0 
+	wget https://www.dropbox.com/s/po2kzdhdgl4ix55/VGG_imagenet.npy
 
 # Set up notebook config
 COPY jupyter_notebook_config.py /root/.jupyter/
