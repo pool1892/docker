@@ -4,6 +4,7 @@ MAINTAINER Luke Miller
 
 # Faster R-CNN has OpenCV dependency
 RUN apt-get update && apt-get install -y --no-install-recommends \
+		git \
         python-opencv \
         libopencv-dev \
         && \
