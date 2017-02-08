@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		git \
         python-opencv \
         libopencv-dev \
+        wget \
         && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
