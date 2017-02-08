@@ -44,7 +44,7 @@ RUN rm VOCtrainval_06-Nov-2007.tar && \
 RUN cd /root/faster_rcnn/data && ln -s VOCdevkit VOCdevkit2007
 
 # Download pre-trained ImageNet models
-RUN cd /root/faster_rcnn/data mkdir pretrain_model && cd pretrain_model && \
+RUN cd /root/faster_rcnn/data && mkdir pretrain_model && cd pretrain_model && \
 	wget https://www.dropbox.com/s/po2kzdhdgl4ix55/VGG_imagenet.npy?dl=0 
 
 # Train and test VGG16 on PASCAL VOC 2007
