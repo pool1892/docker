@@ -20,7 +20,7 @@ RUN pip --no-cache-dir install --upgrade ipython && \
 	python -m ipykernel.kernelspec
 
 # Clone Faster R-CNN WITH recursion
-RUN git clone --recursive https://github.com/smallcorgi/Faster-RCNN_TF.git faster_rcnn
+RUN git clone --recursive https://github.com/smallcorgi/Faster-RCNN_TF.git /root/faster_rcnn
 # Build Faster R-CNN
 RUN cd /root/faster_rcnn/lib && make -j $(($(nproc) + 1))
 
