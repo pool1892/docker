@@ -14,7 +14,7 @@ RUN pip --no-cache-dir install --upgrade ipython && \
 # Clone Faster R-CNN WITH recursion
 RUN git clone --recursive https://github.com/smallcorgi/Faster-RCNN_TF.git faster_rcnn
 # Build Faster R-CNN
-RUN cd /root/faster_rcnn/lib && make
+RUN cd /root/faster_rcnn/lib && make -j $(($(nproc) + 1))
 
 # Get PASCAL VOC 2007 devkit tar files
 RUN wget http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCtrainval_06-Nov-2007.tar && \
