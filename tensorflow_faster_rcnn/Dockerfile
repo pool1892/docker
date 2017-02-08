@@ -2,12 +2,19 @@ FROM pool1892/docker:tensorflow
 
 MAINTAINER Luke Miller
 
+# Faster R-CNN has OpenCV dependency
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        python-opencv \
+        libopencv-dev \
+        && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 # Install other useful Python packages using pip
 RUN pip --no-cache-dir install --upgrade ipython && \
 	pip --no-cache-dir install \
 		easydict \
 		Cython \
- 		python-opencv \
 		&& \
 	python -m ipykernel.kernelspec
 
