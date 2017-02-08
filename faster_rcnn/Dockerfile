@@ -83,6 +83,9 @@ RUN rm VOCtrainval_06-Nov-2007.tar && \
 # Create symbolic link to PASCAL VOC 2007 devkit
 RUN cd /root/faster_rcnn/data && ln -s VOCdevkit VOCdevkit2007
 
+# Download models pretrained on ImageNet
+RUN cd /root/faster_rcnn && ./data/scripts/fetch_imagenet_models.sh
+
 # Set up notebook config
 COPY jupyter_notebook_config.py /root/.jupyter/
 
