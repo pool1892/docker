@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
 		&& \
 	apt-get clean && \
 	apt-get autoremove && \
-	rm -rf /var/lib/apt/lists/* && \
+	rm -rf /var/lib/apt/lists/*
 # Link BLAS library to use OpenBLAS using the alternatives mechanism (https://www.scipy.org/scipylib/building/linux.html#debian-ubuntu)
 	#update-alternatives --set libblas.so.3 /usr/lib/openblas-base/libblas.so.3
 	#update-alternatives --set libblas.so.3 /usr/lib/openblas-base/libopenblas.so.0
