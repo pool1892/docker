@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python-opencv \
         python-tk \
         libopencv-dev \
+        vim \
         wget \
         && \
     apt-get clean && \
@@ -50,6 +51,9 @@ RUN cd /root/faster_rcnn/data && ln -s VOCdevkit VOCdevkit2007
 # Download pre-trained ImageNet models
 RUN cd /root/faster_rcnn/data && mkdir pretrain_model && cd pretrain_model && \
 	wget https://www.dropbox.com/s/po2kzdhdgl4ix55/VGG_imagenet.npy
+
+# Create 'log' directory. Training will work but no logs will be saved
+RUN cd /root/faster_rcnn/experiments && mkdir logs
 
 # Set up notebook config
 COPY jupyter_notebook_config.py /root/.jupyter/
