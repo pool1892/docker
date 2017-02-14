@@ -23,8 +23,8 @@ RUN pip --no-cache-dir install --upgrade ipython && \
 		&& \
 	python -m ipykernel.kernelspec
 
-# Clone Faster R-CNN WITH recursion
-RUN git clone --recursive https://github.com/smallcorgi/Faster-RCNN_TF.git /root/faster_rcnn
+# Clone Faster R-CNN WITH recursion (now using lukemiller86's fork)
+RUN git clone --recursive https://github.com/lukemiller86/Faster-RCNN_TF.git /root/faster_rcnn
 # Copy "make.sh" file to fix gcc5 issue in TF (https://github.com/CharlesShang/TFFRCNN/issues/2)
 COPY make.sh /root/faster_rcnn/lib/make.sh
 # Build Faster R-CNN
