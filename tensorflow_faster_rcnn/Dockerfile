@@ -61,6 +61,9 @@ COPY jupyter_notebook_config.py /root/.jupyter/
 # Jupyter has issues with being run directly: https://github.com/ipython/ipython/issues/7062
 COPY run_jupyter.sh /root/
 
+VOLUME /home/ubuntu/docker/tensorflow_faster_rcnn/output:/root/faster_rcnn/output
+VOLUME /home/ubuntu/docker/tensorflow_faster_rcnn/experiments/logs:/root/faster_rcnn/experiments/logs
+
 # Expose Ports for Tensorboard (6006) and Ipython (8888)
 EXPOSE 6006 8888
 
