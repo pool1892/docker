@@ -1,4 +1,4 @@
-FROM pool1892/docker:tensorflow
+FROM pool1892/docker:tensorflow_1_0
 
 MAINTAINER Luke Miller
 
@@ -24,9 +24,8 @@ RUN pip --no-cache-dir install --upgrade ipython && \
 		&& \
 	python -m ipykernel.kernelspec
 
-# Clone Faster R-CNN WITH recursion
-
-RUN git clone --recursive https://github.com/CharlesShang/TFFRCNN.git /root/faster_rcnn
+# Clone Faster R-CNN WITH recursion (now using lukealexmiller's fork)
+RUN git clone --recursive https://github.com/lukealexmiller/TFFRCNN.git /root/faster_rcnn
 # Copy "make.sh" file to fix gcc5 issue in TF (https://github.com/CharlesShang/TFFRCNN/issues/2)
 COPY make.sh /root/faster_rcnn/lib/make.sh
 # Build Faster R-CNN
@@ -53,6 +52,9 @@ RUN cd /root/faster_rcnn/data && ln -s VOCdevkit VOCdevkit2007
 # Download pre-trained ImageNet models
 RUN cd /root/faster_rcnn/data && mkdir pretrain_model && cd pretrain_model && \
 	wget https://www.dropbox.com/s/po2kzdhdgl4ix55/VGG_imagenet.npy
+
+# Create 'log' directory. Training will work but no logs will be saved
+RUN cd /root/faster_rcnn/experiments && mkdir logs
 
 # Set up notebook config
 COPY jupyter_notebook_config.py /root/.jupyter/

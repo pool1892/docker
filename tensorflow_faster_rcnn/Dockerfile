@@ -23,8 +23,8 @@ RUN pip --no-cache-dir install --upgrade ipython && \
 		&& \
 	python -m ipykernel.kernelspec
 
-# Clone Faster R-CNN WITH recursion (now using lukemiller86's fork)
-RUN git clone --recursive https://github.com/lukemiller86/Faster-RCNN_TF.git /root/faster_rcnn
+# Clone Faster R-CNN WITH recursion (now using lukealexmiller's fork)
+RUN git clone --recursive https://github.com/lukealexmiller/Faster-RCNN_TF.git /root/faster_rcnn
 # Copy "make.sh" file to fix gcc5 issue in TF (https://github.com/CharlesShang/TFFRCNN/issues/2)
 COPY make.sh /root/faster_rcnn/lib/make.sh
 # Build Faster R-CNN
@@ -60,9 +60,6 @@ COPY jupyter_notebook_config.py /root/.jupyter/
 
 # Jupyter has issues with being run directly: https://github.com/ipython/ipython/issues/7062
 COPY run_jupyter.sh /root/
-
-#VOLUME /home/ubuntu/docker/tensorflow_faster_rcnn/output:/root/faster_rcnn/output
-#VOLUME /home/ubuntu/docker/tensorflow_faster_rcnn/experiments/logs:/root/faster_rcnn/experiments/logs
 
 # Expose Ports for Tensorboard (6006) and Ipython (8888)
 EXPOSE 6006 8888
