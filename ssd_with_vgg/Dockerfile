@@ -14,8 +14,6 @@ RUN mkdir /root/data && cd /root/data && \
 	tar -xvf VOCtrainval_06-Nov-2007.tar && \
 	tar -xvf VOCtest_06-Nov-2007.tar
 
-RUN cd /root/caffe && ./data/VOC0712/create_list.sh && \
-	./data/VOC0712/create_data.sh
 EXPOSE 6006 8888
 
 WORKDIR "/root"
