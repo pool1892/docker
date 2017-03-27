@@ -17,24 +17,23 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libopencv-dev \
         libprotobuf-dev \
         libsnappy-dev \
+        unzip \
         protobuf-compiler \
         python-dev \
         python-numpy \
         python-pip \
         python-setuptools \
         python-scipy \
-	python-nose \
-	python-h5py \
-	python-skimage \
-	python-matplotlib \
-	python-pandas \
-	python-sklearn \
+    	python-nose \
+    	python-h5py \
+    	python-skimage \
+    	python-matplotlib \
+    	python-pandas \
+    	python-sklearn \
         python-sympy \
-    python-scipy && \
-    rm -rf /var/lib/apt/lists/* && \
+        python-scipy && \
+        rm -rf /var/lib/apt/lists/* && \
     pip install --upgrade pip &&\
-    \
-    \
     pip --no-cache-dir install \
         ipykernel \
         jupyter \
