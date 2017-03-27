@@ -23,6 +23,7 @@ RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
     wget --quiet https://repo.continuum.io/archive/Anaconda3-4.3.1-Linux-x86_64.sh -O ~/anaconda.sh && \
     /bin/bash ~/anaconda.sh -b -p /opt/conda && \
     rm ~/anaconda.sh
+ENV PATH /opt/conda/bin:$PATH
 
 
 
@@ -31,7 +32,6 @@ RUN conda install --channel https://conda.anaconda.org/menpo opencv3
 # Install TensorFlow GPU version.
 RUN pip install tensorflow-gpu
 
-ENV PATH /opt/conda/bin:$PATH
 
 
 # TensorBoard
