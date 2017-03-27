@@ -10,6 +10,7 @@ RUN apt-get update --fix-missing &&\
                 git \
                 bzip2 \ 
                 ca-certificates \
+                libgtk2.0-0 \
                 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
