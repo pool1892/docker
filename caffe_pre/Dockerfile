@@ -24,6 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         python-pip \
         python-setuptools \
         python-scipy \
+        python-opencv \
     	python-nose \
     	python-h5py \
     	python-skimage \
