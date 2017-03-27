@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         tar \
         unzip \
       	wget \
+        git \
         && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
