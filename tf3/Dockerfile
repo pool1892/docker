@@ -8,6 +8,8 @@ RUN apt-get update --fix-missing &&\
                 unzip \
                 wget \
                 git \
+                bzip2 \ 
+                ca-certificates \
                 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
