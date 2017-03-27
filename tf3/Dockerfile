@@ -27,7 +27,7 @@ ENV PATH /opt/conda/bin:$PATH
 
 
 
-RUN conda install --channel https://conda.anaconda.org/menpo opencv3
+RUN conda install -y --channel https://conda.anaconda.org/menpo opencv3
 
 # Install TensorFlow GPU version.
 RUN pip install tensorflow-gpu
