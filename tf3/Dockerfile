@@ -8,12 +8,6 @@ RUN apt-get update --fix-missing &&\
                 unzip \
                 wget \
                 git \
-                bzip2 \ 
-                ca-certificates \
-                libglib2.0-0\
-                libxext6 \
-                libsm6 \
-                libxrender1 \
                 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
