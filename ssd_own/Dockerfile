@@ -7,8 +7,8 @@ RUN mkdir /root/caffe/models/VGGNet && \
 	wget http://cs.unc.edu/~wliu/projects/ParseNet/VGG_ILSVRC_16_layers_fc_reduced.caffemodel
 
 RUN mkdir /root/data && cd /root/data && \
-	wget https://www.dropbox.com/s/56owqp109fpyz32/VOCdevkit.zip && \
-    unzip VOCdevkit.zip && \
+	wget https://www.dropbox.com/s/9ve59u2qzhvy2hk/source.zip && \
+	unzip VOCdevkit.zip && \
 	rm VOCdevkit.zip
 
 RUN cd /root/caffe && \
