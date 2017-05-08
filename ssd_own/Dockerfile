@@ -5,6 +5,10 @@ ENV CAFFE_ROOT=/root/caffe
 WORKDIR $CAFFE_ROOT
 
 
+RUN mkdir /root/caffe/models/VGGNet && \
+	cd /root/caffe/models/VGGNet && \
+	wget http://cs.unc.edu/~wliu/projects/ParseNet/VGG_ILSVRC_16_layers_fc_reduced.caffemodel
+
 RUN git clone https://github.com/pool1892/caffe.git . && \
     git checkout own && \
     pip install --upgrade pip && \
