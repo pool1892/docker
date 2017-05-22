@@ -5,9 +5,7 @@ ENV CAFFE_ROOT=/root/caffe
 WORKDIR $CAFFE_ROOT
 
 
-RUN mkdir /root/caffe/models/VGGNet && \
-	cd /root/caffe/models/VGGNet && \
-	wget http://cs.unc.edu/~wliu/projects/ParseNet/VGG_ILSVRC_16_layers_fc_reduced.caffemodel
+
 
 RUN git clone https://github.com/pool1892/caffe.git . && \
     git checkout own && \
@@ -17,6 +15,10 @@ RUN git clone https://github.com/pool1892/caffe.git . && \
     mkdir build && cd build && \
     cmake -DUSE_CUDNN=1 -DUSE_NCCL=1 .. && \
     make -j"$(nproc)"
+    
+RUN mkdir /root/caffe/models/VGGNet && \
+	cd /root/caffe/models/VGGNet && \
+	wget http://cs.unc.edu/~wliu/projects/ParseNet/VGG_ILSVRC_16_layers_fc_reduced.caffemodel
 
 ENV PYCAFFE_ROOT $CAFFE_ROOT/python
 ENV PYTHONPATH $PYCAFFE_ROOT:$PYTHONPATH
