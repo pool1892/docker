@@ -8,8 +8,9 @@ WORKDIR $YOLO
 
 
 
-RUN git clone git@github.com:pool1892/darknet.git . && \
+RUN git clone https://github.com/pool1892/darknet.git . && \
     git checkout docker && \
+    git pull && \
     make
     
 
