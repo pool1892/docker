@@ -12,7 +12,7 @@ RUN git clone -b cart_only --single-branch https://github.com/pool1892/caffe.git
     cd python && for req in $(cat requirements.txt) pydot; do pip install $req; done && cd .. && \
     git clone https://github.com/NVIDIA/nccl.git && cd nccl && make -j install && cd .. && rm -rf nccl && \
     mkdir build && cd build && \
-    cmake -DUSE_CUDNN=1 -DUSE_NCCL=1 .. && \
+    cmake -DUSE_CUDNN=1 -DUSE_NCCL=1 -DBLAS=Open .. && \
     make -j"$(nproc)"
     
 RUN mkdir /root/caffe/models/VGGNet && \
