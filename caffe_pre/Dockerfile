@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         git \
         wget \
         libatlas-base-dev \
+	libopenblas-dev \
         libboost-all-dev \
         libgflags-dev \
         libgoogle-glog-dev \
